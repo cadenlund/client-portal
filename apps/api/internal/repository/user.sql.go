@@ -11,6 +11,29 @@ import (
 	"github.com/google/uuid"
 )
 
+const clearUserAvatar = `-- name: ClearUserAvatar :one
+UPDATE users
+SET avatar_url = NULL
+WHERE id = $1
+RETURNING id, email, password_hash, name, avatar_url, role, created_at, updated_at
+`
+
+func (q *Queries) ClearUserAvatar(ctx context.Context, id uuid.UUID) (User, error) {
+	row := q.db.QueryRow(ctx, clearUserAvatar, id)
+	var i User
+	err := row.Scan(
+		&i.ID,
+		&i.Email,
+		&i.PasswordHash,
+		&i.Name,
+		&i.AvatarUrl,
+		&i.Role,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
 const createUser = `-- name: CreateUser :one
 INSERT INTO users (email, password_hash, name, avatar_url) 
 VALUES ($1, $2, $3, $4)
@@ -71,6 +94,65 @@ SELECT id, email, password_hash, name, avatar_url, role, created_at, updated_at 
 
 func (q *Queries) GetUserByID(ctx context.Context, id uuid.UUID) (User, error) {
 	row := q.db.QueryRow(ctx, getUserByID, id)
+	var i User
+	err := row.Scan(
+		&i.ID,
+		&i.Email,
+		&i.PasswordHash,
+		&i.Name,
+		&i.AvatarUrl,
+		&i.Role,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
+const updateUser = `-- name: UpdateUser :one
+UPDATE users
+SET 
+    name = COALESCE($2, name),
+    avatar_url = COALESCE($3, avatar_url)
+WHERE id = $1
+RETURNING id, email, password_hash, name, avatar_url, role, created_at, updated_at
+`
+
+type UpdateUserParams struct {
+	ID        uuid.UUID
+	Name      *string
+	AvatarUrl *string
+}
+
+func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error) {
+	row := q.db.QueryRow(ctx, updateUser, arg.ID, arg.Name, arg.AvatarUrl)
+	var i User
+	err := row.Scan(
+		&i.ID,
+		&i.Email,
+		&i.PasswordHash,
+		&i.Name,
+		&i.AvatarUrl,
+		&i.Role,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
+const updateUserPassword = `-- name: UpdateUserPassword :one
+UPDATE users
+SET password_hash = $2
+WHERE id = $1
+RETURNING id, email, password_hash, name, avatar_url, role, created_at, updated_at
+`
+
+type UpdateUserPasswordParams struct {
+	ID           uuid.UUID
+	PasswordHash string
+}
+
+func (q *Queries) UpdateUserPassword(ctx context.Context, arg UpdateUserPasswordParams) (User, error) {
+	row := q.db.QueryRow(ctx, updateUserPassword, arg.ID, arg.PasswordHash)
 	var i User
 	err := row.Scan(
 		&i.ID,
