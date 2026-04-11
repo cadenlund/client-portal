@@ -120,99 +120,100 @@ Managing 7+ client projects with no central place for clients to see progress, r
 - scs for session management
 
 ## API Endpoints
-# Auth
-POST   /api/v1/auth/register
-POST   /api/v1/auth/login
-POST   /api/v1/auth/logout
-POST   /api/v1/auth/forgot-password
-POST   /api/v1/auth/reset-password
 
-# Users
-GET    /api/v1/users/me
-GET    /api/v1/users?limit=20&cursor=abc123
-PATCH  /api/v1/users/:id
+### Auth
+- POST   /api/v1/auth/register
+- POST   /api/v1/auth/login
+- POST   /api/v1/auth/logout
+- POST   /api/v1/auth/forgot-password
+- POST   /api/v1/auth/reset-password
 
-# Projects
-POST   /api/v1/projects
-GET    /api/v1/projects?limit=20&cursor=abc123
-GET    /api/v1/projects/:id
-Patch  /api/v1/projects/:id
-DELETE  /api/v1/projects/:id
+### Users
+- GET    /api/v1/users/me
+- GET    /api/v1/users?limit=20&cursor=abc123
+- PATCH  /api/v1/users/:id
 
-# Project Meta (key-value pairs)
-GET    /api/v1/projects/:id/meta
-PUT    /api/v1/projects/:id/meta
+### Projects
+- POST   /api/v1/projects
+- GET    /api/v1/projects?limit=20&cursor=abc123
+- GET    /api/v1/projects/:id
+- PATCH  /api/v1/projects/:id
+- DELETE /api/v1/projects/:id
 
-# Project members
-GET    /api/v1/projects/:id/members?limit=20&cursor=abc123
-DELETE /api/v1/projects/:id/members/:userId
+### Project Meta (key-value pairs)
+- GET    /api/v1/projects/:id/meta
+- PUT    /api/v1/projects/:id/meta
 
-# Invites
-POST  /api/v1/projects/:id/invites
-GET   /api/v1/projects/:id/invites?limit=20&cursor=abc123
-GET    /api/v1/invites/:token  # public validation
-POST   /api/v1/invites/:token/accept     # accept
-DELETE /api/v1/projects/:id/invites/:id
+### Project Members
+- GET    /api/v1/projects/:id/members?limit=20&cursor=abc123
+- DELETE /api/v1/projects/:id/members/:userId
 
-# Environments
-GET    /api/v1/projects/:id/environments
-POST   /api/v1/projects/:id/environments
-PATCH  /api/v1/projects/:id/environments/:envId
-DELETE /api/v1/projects/:id/environments/:envId
+### Invites
+- POST   /api/v1/projects/:id/invites
+- GET    /api/v1/projects/:id/invites?limit=20&cursor=abc123
+- GET    /api/v1/invites/:token  # public validation
+- POST   /api/v1/invites/:token/accept  # accept
+- DELETE /api/v1/projects/:id/invites/:id
 
-# Services
-GET    /api/v1/projects/:id/environments/:envId/services
-POST   /api/v1/projects/:id/environments/:envId/services
-PATCH  /api/v1/projects/:id/environments/:envId/services/:svcId
-DELETE /api/v1/projects/:id/environments/:envId/services/:svcId
+### Environments
+- GET    /api/v1/projects/:id/environments
+- POST   /api/v1/projects/:id/environments
+- PATCH  /api/v1/projects/:id/environments/:envId
+- DELETE /api/v1/projects/:id/environments/:envId
 
-# Deliverables
-GET    /api/v1/projects/:id/deliverables
-POST   /api/v1/projects/:id/deliverables
-GET    /api/v1/projects/:id/deliverables/:delId
-PATCH  /api/v1/projects/:id/deliverables/:delId
-DELETE /api/v1/projects/:id/deliverables/:delId
+### Services
+- GET    /api/v1/projects/:id/environments/:envId/services
+- POST   /api/v1/projects/:id/environments/:envId/services
+- PATCH  /api/v1/projects/:id/environments/:envId/services/:svcId
+- DELETE /api/v1/projects/:id/environments/:envId/services/:svcId
 
-# Deliverable Environments (mark deployed/undeployed to environment)
-POST   /api/v1/projects/:id/deliverables/:delId/environments/:envId
-DELETE /api/v1/projects/:id/deliverables/:delId/environments/:envId
+### Deliverables
+- GET    /api/v1/projects/:id/deliverables
+- POST   /api/v1/projects/:id/deliverables
+- GET    /api/v1/projects/:id/deliverables/:delId
+- PATCH  /api/v1/projects/:id/deliverables/:delId
+- DELETE /api/v1/projects/:id/deliverables/:delId
 
-# Reviews
-GET    /api/v1/projects/:id/reviews
-POST   /api/v1/projects/:id/reviews
-GET    /api/v1/projects/:id/reviews/:reviewId
-PATCH  /api/v1/projects/:id/reviews/:reviewId
-DELETE /api/v1/projects/:id/reviews/:reviewId
+### Deliverable Environments (mark deployed/undeployed)
+- POST   /api/v1/projects/:id/deliverables/:delId/environments/:envId
+- DELETE /api/v1/projects/:id/deliverables/:delId/environments/:envId
 
-# Messages (polymorphic - project chat & comments)
-GET    /api/v1/projects/:id/messages?limit=20&cursor=abc123
-POST   /api/v1/projects/:id/messages
-PATCH  /api/v1/projects/:id/messages/:msgId
-DELETE /api/v1/projects/:id/messages/:msgId
-GET    /api/v1/projects/:id/deliverables/:delId/messages?limit=20&cursor=abc123
-POST   /api/v1/projects/:id/deliverables/:delId/messages
-PATCH  /api/v1/projects/:id/deliverables/:delId/messages/:msgId
-DELETE /api/v1/projects/:id/deliverables/:delId/messages/:msgId
-GET    /api/v1/projects/:id/reviews/:reviewId/messages?limit=20&cursor=abc123
-POST   /api/v1/projects/:id/reviews/:reviewId/messages
-PATCH  /api/v1/projects/:id/reviews/:reviewId/messages/:msgId
-DELETE /api/v1/projects/:id/reviews/:reviewId/messages/:msgId
+### Reviews
+- GET    /api/v1/projects/:id/reviews
+- POST   /api/v1/projects/:id/reviews
+- GET    /api/v1/projects/:id/reviews/:reviewId
+- PATCH  /api/v1/projects/:id/reviews/:reviewId
+- DELETE /api/v1/projects/:id/reviews/:reviewId
 
-# Credentials (admin/dev only)
-GET    /api/v1/projects/:id/credentials
-POST   /api/v1/projects/:id/credentials
-PATCH  /api/v1/projects/:id/credentials/:credId
-DELETE /api/v1/projects/:id/credentials/:credId
+### Messages (polymorphic - project chat & comments)
+- GET    /api/v1/projects/:id/messages?limit=20&cursor=abc123
+- POST   /api/v1/projects/:id/messages
+- PATCH  /api/v1/projects/:id/messages/:msgId
+- DELETE /api/v1/projects/:id/messages/:msgId
+- GET    /api/v1/projects/:id/deliverables/:delId/messages?limit=20&cursor=abc123
+- POST   /api/v1/projects/:id/deliverables/:delId/messages
+- PATCH  /api/v1/projects/:id/deliverables/:delId/messages/:msgId
+- DELETE /api/v1/projects/:id/deliverables/:delId/messages/:msgId
+- GET    /api/v1/projects/:id/reviews/:reviewId/messages?limit=20&cursor=abc123
+- POST   /api/v1/projects/:id/reviews/:reviewId/messages
+- PATCH  /api/v1/projects/:id/reviews/:reviewId/messages/:msgId
+- DELETE /api/v1/projects/:id/reviews/:reviewId/messages/:msgId
 
-# Notification Preferences
-GET    /api/v1/users/me/notification-preferences
-PATCH  /api/v1/users/me/notification-preferences
+### Credentials (admin/dev only)
+- GET    /api/v1/projects/:id/credentials
+- POST   /api/v1/projects/:id/credentials
+- PATCH  /api/v1/projects/:id/credentials/:credId
+- DELETE /api/v1/projects/:id/credentials/:credId
 
-# WebSocket
-WS     /api/v1/ws
+### Notification Preferences
+- GET    /api/v1/users/me/notification-preferences
+- PATCH  /api/v1/users/me/notification-preferences
 
-# Webhooks
-POST   /api/v1/webhooks/betterstack   # uptime status changes
+### WebSocket
+- WS     /api/v1/ws
+
+### Webhooks
+- POST   /api/v1/webhooks/betterstack  # uptime status changes
 
 ## Third-Party Integrations
 - Resend (transactional emails)
