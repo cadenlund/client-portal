@@ -30,10 +30,10 @@ var user = CreateUserParams{
 	AvatarUrl:    nil,
 }
 
-func TestCreate_User(t *testing.T) {
-	ctx := context.Background() // generic, never canceled
+var ctx = context.Background() // generic, never canceled
 
-	t.Run("Create user: success", func(t *testing.T) {
+func TestCreate_User(t *testing.T) {
+	t.Run("Success", func(t *testing.T) {
 		//1. First create the queries dependency struct (Generated from sqlc)
 		// Use a transaction here that rolls back on every subtest
 		q := New(testutil.WithTx(t, testPool)) // pass t to register rollback on cleanup
@@ -57,9 +57,8 @@ func TestCreate_User(t *testing.T) {
 		assert.WithinDuration(t, time.Now(), actual.UpdatedAt, time.Second)
 	})
 
-	t.Run("Create user: duplicate email", func(t *testing.T) {
+	t.Run("Duplicate email", func(t *testing.T) {
 		q := New(testutil.WithTx(t, testPool))
-
 		//1. First insert succeeds
 		_, err := q.CreateUser(ctx, user)
 		require.NoError(t, err)
@@ -75,10 +74,8 @@ func TestCreate_User(t *testing.T) {
 
 }
 
-func TestGet_user(t *testing.T) {
-	ctx := context.Background()
-
-	t.Run("Test get user: success", func(t *testing.T) {
+func TestGet_user_by_email(t *testing.T) {
+	t.Run("Success", func(t *testing.T) {
 		q := New(testutil.WithTx(t, testPool))
 
 		//1. Insert user
@@ -93,7 +90,7 @@ func TestGet_user(t *testing.T) {
 		assert.Equal(t, expected, actual)
 	})
 
-	t.Run("Test get user: Not found", func(t *testing.T) {
+	t.Run("Not found", func(t *testing.T) {
 		q := New(testutil.WithTx(t, testPool))
 
 		//1. Get by email
@@ -102,4 +99,32 @@ func TestGet_user(t *testing.T) {
 		//2. Require error
 		require.ErrorIs(t, err, pgx.ErrNoRows)
 	})
+}
+
+func TestGet_user_by_ID(t *testing.T) {
+	t.Run("Success", func(t *testing.T) {
+		q := New(testutil.WithTx(t, testPool))
+
+		//1. Insert user
+		expected, err := q.CreateUser(ctx, user)
+		require.NoError(t, err)
+
+		//2. Get by ID
+		actual, err := q.GetUserByID(ctx, expected.ID)
+		require.NoError(t, err)
+
+		//3. Assert
+		assert.Equal(t, expected, actual)
+	})
+
+	t.Run("Not found", func(t *testing.T) {
+		q := New(testutil.WithTx(t, testPool))
+
+		//1. Get by id
+		_, err := q.GetUserByID(ctx, uuid.New()) // Use uuid.New() to create a random uuid v4
+
+		//2. Require error
+		require.ErrorIs(t, err, pgx.ErrNoRows)
+	})
+
 }

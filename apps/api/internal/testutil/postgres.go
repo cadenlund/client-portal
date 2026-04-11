@@ -68,9 +68,17 @@ func Cleanup() error {
 	return nil
 }
 
+// Function for creatign a transaction that rolls back when the test is complete
 func WithTx(t *testing.T, pool *pgxpool.Pool) pgx.Tx {
+	//1. Create tx
 	tx, err := pool.Begin(context.Background())
+
+	//2. Handle error with testing library
 	require.NoError(t, err)
+
+	//3. Register anonymous function to rollback on test/subtest cleanup
 	t.Cleanup(func() { tx.Rollback(context.Background()) })
+
+	//4. Return transaction object
 	return tx
 }
