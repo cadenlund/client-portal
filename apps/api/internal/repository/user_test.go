@@ -8,7 +8,6 @@
 package repository
 
 import (
-	"context"
 	"testing"
 	"time"
 
@@ -20,8 +19,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
-
-var ctx = context.Background() // generic, never canceled
 
 func TestCreate_User(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {

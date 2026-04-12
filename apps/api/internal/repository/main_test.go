@@ -7,12 +7,15 @@
 package repository
 
 import (
+	"context"
 	"log"
 	"testing"
 
 	"github.com/cadenlund/client-portal/internal/testutil"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
+
+var ctx = context.Background() // generic, never canceled
 
 // Pool that tests use, global - setup once per package
 var testPool *pgxpool.Pool
