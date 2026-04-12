@@ -11,7 +11,7 @@ import (
 	"log"
 	"testing"
 
-	"github.com/cadenlund/client-portal/internal/testutil"
+	"github.com/cadenlund/client-portal/apps/api/internal/testutil"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 

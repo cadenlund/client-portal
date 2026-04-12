@@ -11,23 +11,23 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var auth = NewAuth(DefaultAuthConfig)
+var hasher = NewHasher(DefaultConfig)
 
 func TestVerify_Round_Trip(t *testing.T) {
 	const password = "Password123123"
+	const wrongPassowrd = "wrong password"
 
-	//1. Hash
-	hash, err := auth.Hash(password)
+	hash, err := hasher.Hash(password)
 	require.NoError(t, err)
 
 	t.Run("Correct password", func(t *testing.T) {
-		match, err := auth.Verify(password, hash)
+		match, err := hasher.Verify(password, hash)
 		require.NoError(t, err)
 		assert.True(t, match, "Correct password should match")
 	})
 
 	t.Run("Incorrect password", func(t *testing.T) {
-		match, err := auth.Verify("wrong password", hash)
+		match, err := hasher.Verify(wrongPassowrd, hash)
 		require.NoError(t, err)
 		assert.False(t, match, "Wrong password should not match")
 	})

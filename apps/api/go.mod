@@ -1,4 +1,4 @@
-module github.com/cadenlund/client-portal
+module github.com/cadenlund/client-portal/apps/api
 
 go 1.25.0
 

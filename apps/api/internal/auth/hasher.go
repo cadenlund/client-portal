@@ -2,7 +2,7 @@
 // Created: 4/12/2026
 // Last updated: 4/12/2026
 // Notes: - Wraps github.com/alexedwards/argon2id behind a small
-// AuthConfig/Auth surface so callers in the api don't depend on it directly.
+// Config/Hasher surface so callers in the api don't depend on it directly.
 // - Hash format (PHC string): $argon2id$v=19$m=<KiB>,t=<iters>,p=<lanes>$<b64Salt>$<b64Key>
 
 // Argon2id notes:
@@ -27,8 +27,8 @@ import (
 	"github.com/alexedwards/argon2id"
 )
 
-// AuthConfig holds Argon2id tuning parameters.
-type AuthConfig struct {
+// Config holds Argon2id tuning parameters.
+type Config struct {
 	Memory      uint32
 	Iterations  uint32
 	Parallelism uint8
@@ -36,8 +36,8 @@ type AuthConfig struct {
 	KeyLength   uint32
 }
 
-// DefaultAuthConfig is the OWASP minimum for Argon2id.
-var DefaultAuthConfig = AuthConfig{
+// DefaultConfig is the OWASP minimum for Argon2id.
+var DefaultConfig = Config{
 	Memory:      19 * 1024,
 	Iterations:  2,
 	Parallelism: 1,
@@ -45,13 +45,13 @@ var DefaultAuthConfig = AuthConfig{
 	KeyLength:   32,
 }
 
-// Auth hashes and verifies passwords using a fixed config.
-type Auth struct {
+// Hasher hashes and verifies passwords using a fixed config.
+type Hasher struct {
 	params *argon2id.Params
 }
 
-func NewAuth(cfg AuthConfig) *Auth {
-	return &Auth{
+func NewHasher(cfg Config) *Hasher {
+	return &Hasher{
 		params: &argon2id.Params{
 			Memory:      cfg.Memory,
 			Iterations:  cfg.Iterations,
@@ -63,11 +63,11 @@ func NewAuth(cfg AuthConfig) *Auth {
 }
 
 // Hash returns a PHC-formatted Argon2id hash of password.
-func (a *Auth) Hash(password string) (string, error) {
-	return argon2id.CreateHash(password, a.params)
+func (h *Hasher) Hash(password string) (string, error) {
+	return argon2id.CreateHash(password, h.params)
 }
 
 // Verify reports whether password matches encodedHash.
-func (a *Auth) Verify(password, encodedHash string) (bool, error) {
+func (h *Hasher) Verify(password, encodedHash string) (bool, error) {
 	return argon2id.ComparePasswordAndHash(password, encodedHash)
 }

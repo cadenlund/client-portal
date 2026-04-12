@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cadenlund/client-portal/internal/testutil"
-	"github.com/cadenlund/client-portal/internal/util"
+	"github.com/cadenlund/client-portal/apps/api/internal/testutil"
+	"github.com/cadenlund/client-portal/apps/api/internal/util"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
