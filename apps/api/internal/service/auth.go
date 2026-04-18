@@ -42,7 +42,7 @@ func (s *AuthService) Register(ctx context.Context, email, password, name string
 	user, err := s.repo.CreateUser(ctx, repository.CreateUserParams{
 		Email:        email,
 		PasswordHash: hash,
-		Name:         &name,
+		Name:         name,
 		AvatarUrl:    nil,
 	})
 	if err != nil {

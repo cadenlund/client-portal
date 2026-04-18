@@ -64,7 +64,7 @@ type User struct {
 	ID           uuid.UUID
 	Email        string
 	PasswordHash string
-	Name         *string
+	Name         string
 	AvatarUrl    *string
 	Role         UserRole
 	CreatedAt    time.Time

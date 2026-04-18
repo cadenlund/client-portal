@@ -43,7 +43,7 @@ RETURNING id, email, password_hash, name, avatar_url, role, created_at, updated_
 type CreateUserParams struct {
 	Email        string
 	PasswordHash string
-	Name         *string
+	Name         string
 	AvatarUrl    *string
 }
 

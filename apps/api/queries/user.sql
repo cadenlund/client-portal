@@ -12,8 +12,8 @@ SELECT * FROM users WHERE id = $1;
 -- name: UpdateUser :one
 UPDATE users
 SET 
-    name = COALESCE($2, name),
-    avatar_url = COALESCE($3, avatar_url)
+    name = COALESCE(sqlc.narg(name), name),
+    avatar_url = COALESCE(sqlc.narg(avatar_url), avatar_url)
 WHERE id = $1
 RETURNING *;
 

@@ -25,7 +25,7 @@ func TestCreate_User(t *testing.T) {
 		user := CreateUserParams{
 			Email:        "test@example.com",
 			PasswordHash: "hashedPassword",
-			Name:         util.Ptr("John Doe"), // Needed because we return address of for a pointer type
+			Name:         "John Doe", // Needed because we return address of for a pointer type
 			AvatarUrl:    nil,
 		}
 
@@ -56,7 +56,7 @@ func TestCreate_User(t *testing.T) {
 		user := CreateUserParams{
 			Email:        "test@example.com",
 			PasswordHash: "hashedPassword",
-			Name:         util.Ptr("John Doe"),
+			Name:         "John Doe",
 			AvatarUrl:    nil,
 		}
 
@@ -82,7 +82,7 @@ func TestGet_User_By_Email(t *testing.T) {
 		user := CreateUserParams{
 			Email:        "test@example.com",
 			PasswordHash: "hashedPassword",
-			Name:         util.Ptr("John Doe"),
+			Name:         "John Doe",
 			AvatarUrl:    nil,
 		}
 		q := New(testutil.WithTx(t, testPool))
@@ -115,7 +115,7 @@ func TestGet_User_By_ID(t *testing.T) {
 		user := CreateUserParams{
 			Email:        "test@example.com",
 			PasswordHash: "hashedPassword",
-			Name:         util.Ptr("John Doe"),
+			Name:         "John Doe",
 			AvatarUrl:    nil,
 		}
 		q := New(testutil.WithTx(t, testPool))
@@ -149,7 +149,7 @@ func TestUpdate_User(t *testing.T) {
 		user := CreateUserParams{
 			Email:        "test@example.com",
 			PasswordHash: "hashedPassword",
-			Name:         util.Ptr("John Doe"),
+			Name:         "John Doe",
 			AvatarUrl:    nil,
 		}
 		update := UpdateUserParams{
@@ -170,7 +170,7 @@ func TestUpdate_User(t *testing.T) {
 		require.NoError(t, err)
 
 		//4. Assert
-		assert.Equal(t, "Bobby Smith", *actual.Name)
+		assert.Equal(t, "Bobby Smith", actual.Name)
 		assert.Equal(t, "Image_bucket.com", *actual.AvatarUrl)
 	})
 
@@ -178,7 +178,7 @@ func TestUpdate_User(t *testing.T) {
 		user := CreateUserParams{
 			Email:        "test@example.com",
 			PasswordHash: "hashedPassword",
-			Name:         util.Ptr("John Doe"),
+			Name:         "John Doe",
 			AvatarUrl:    util.Ptr("https://old-avatar.com/img.png"),
 		}
 		q := New(testutil.WithTx(t, testPool))
@@ -199,7 +199,7 @@ func TestUpdate_User(t *testing.T) {
 		require.NoError(t, err)
 
 		//4. Assert - name unchanged, avatar updated
-		assert.Equal(t, "John Doe", *actual.Name)
+		assert.Equal(t, "John Doe", actual.Name)
 		assert.Equal(t, "Image_bucket.com", *actual.AvatarUrl)
 	})
 
@@ -224,7 +224,7 @@ func TestUpdate_User_Password(t *testing.T) {
 		user := CreateUserParams{
 			Email:        "test@example.com",
 			PasswordHash: "hashedPassword",
-			Name:         util.Ptr("John Doe"),
+			Name:         "John Doe",
 			AvatarUrl:    util.Ptr("https://old-avatar.com/img.png"),
 		}
 
@@ -268,7 +268,7 @@ func TestClear_User_Avatar(t *testing.T) {
 		user := CreateUserParams{
 			Email:        "test@example.com",
 			PasswordHash: "hashedPassword",
-			Name:         util.Ptr("John Doe"),
+			Name:         "John Doe",
 			AvatarUrl:    util.Ptr("https://example.com/avatar.png"),
 		}
 		q := New(testutil.WithTx(t, testPool))
